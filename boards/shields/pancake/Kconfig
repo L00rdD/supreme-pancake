@@ -1,0 +1,4 @@
+config SHIELD_PANCAKE
+    bool "Pancake numpad shield"
+    select ZMK_KEYBOARD
+
