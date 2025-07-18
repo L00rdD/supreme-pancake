@@ -1,67 +1,33 @@
+/*
+ * Overlay pour Numpad 5x5 avec nice!nano v2
+ * SPDX-License-Identifier: MIT
+ */
+
+#include "boards/shields/nice_nano_v2.overlay"
 
 / {
-    keymap {
-        compatible = "zmk,keymap";
+    chosen {
+        zmk,kscan = &kscan;
     };
-};
 
-&pinctrl {
-    row0: row_0 {
-        pinmux = <NRF_P1 05 NRF_GPIO_PIN_DIR_INPUT NRF_GPIO_PIN_PULL_UP>;
-    };
-    row1: row_1 {
-        pinmux = <NRF_P1 06 NRF_GPIO_PIN_DIR_INPUT NRF_GPIO_PIN_PULL_UP>;
-    };
-    row2: row_2 {
-        pinmux = <NRF_P1 07 NRF_GPIO_PIN_DIR_INPUT NRF_GPIO_PIN_PULL_UP>;
-    };
-    row3: row_3 {
-        pinmux = <NRF_P1 08 NRF_GPIO_PIN_DIR_INPUT NRF_GPIO_PIN_PULL_UP>;
-    };
-    row4: row_4 {
-        pinmux = <NRF_P1 09 NRF_GPIO_PIN_DIR_INPUT NRF_GPIO_PIN_PULL_UP>;
-    };
-    col0: col_0 {
-        pinmux = <NRF_P0 17 NRF_GPIO_PIN_DIR_OUTPUT>;
-    };
-    col1: col_1 {
-        pinmux = <NRF_P0 16 NRF_GPIO_PIN_DIR_OUTPUT>;
-    };
-    col2: col_2 {
-        pinmux = <NRF_P0 15 NRF_GPIO_PIN_DIR_OUTPUT>;
-    };
-    col3: col_3 {
-        pinmux = <NRF_P0 14 NRF_GPIO_PIN_DIR_OUTPUT>;
-    };
-    col4: col_4 {
-        pinmux = <NRF_P0 13 NRF_GPIO_PIN_DIR_OUTPUT>;
-    };
-};
+    kscan: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        wakeup-source;
 
-&kscan {
-    row-gpios = <&gpio1 5 GPIO_PULL_UP>,
-                <&gpio1 6 GPIO_PULL_UP>,
-                <&gpio1 7 GPIO_PULL_UP>,
-                <&gpio1 8 GPIO_PULL_UP>,
-                <&gpio1 9 GPIO_PULL_UP>;
-    col-gpios = <&gpio0 17 GPIO_ACTIVE_LOW>,
-                <&gpio0 16 GPIO_ACTIVE_LOW>,
-                <&gpio0 15 GPIO_ACTIVE_LOW>,
-                <&gpio0 14 GPIO_ACTIVE_LOW>,
-                <&gpio0 13 GPIO_ACTIVE_LOW>;
-    diode-direction = COL2ROW;
-};
+        diode-direction = "col2row";
 
-&rgb_under {
-    compatible = "zmk,rgb-underglow";
-    pin = <&gpio0 10>;
-    chain-length = <1>;
-    io-channels = <&adc 0>;
-    label = "RGB";
-};
+        row-gpios =
+            <&nice_nano 5 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>,
+            <&nice_nano 6 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>,
+            <&nice_nano 7 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>,
+            <&nice_nano 8 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>,
+            <&nice_nano 9 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>;
 
-&encoder0 {
-    compatible = "zmk,encoder";
-    a-pin = <&gpio0 20>;
-    b-pin = <&gpio0 19>;
+        col-gpios =
+            <&nice_nano 17 GPIO_ACTIVE_HIGH>,
+            <&nice_nano 16 GPIO_ACTIVE_HIGH>,
+            <&nice_nano 15 GPIO_ACTIVE_HIGH>,
+            <&nice_nano 14 GPIO_ACTIVE_HIGH>,
+            <&nice_nano 13 GPIO_ACTIVE_HIGH>;
+    };
 };
